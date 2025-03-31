@@ -1,0 +1,33 @@
+.App {
+  text-align: center;
+  padding-top: 2rem;
+}
+
+.puzzle-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-gap: 5px;
+  justify-content: center;
+  margin: 20px auto;
+}
+
+.tile {
+  width: 100px;
+  height: 100px;
+  background-color: lavender;
+  border-radius: 8px;
+  background-size: 300px 300px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.tile.empty {
+  background: #eee;
+  cursor: default;
+}
+
+.message {
+  font-size: 1.5rem;
+  color: green;
+  margin-top: 1rem;
+}
