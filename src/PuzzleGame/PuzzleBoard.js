@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import PuzzlePiece from './PuzzlePiece';
 import { useNavigate } from 'react-router-dom';
-
+import Confetti from 'react-confetti';
+import { useWindowSize } from '@react-hook/window-size';
 
 const gridSize = 3;
 const tileCount = gridSize * gridSize;
 
-
-
 function PuzzleBoard({ imageUrl }) {
   const navigate = useNavigate();
+  const [width, height] = useWindowSize();
   const [slots, setSlots] = useState(Array(tileCount).fill(null));
+  const [isComplete, setIsComplete] = useState(false);
 
-  // Shuffle pieces when puzzle loads
   const generateShuffledPieces = () => {
     const pieces = Array(tileCount - 1)
       .fill(null)
@@ -32,11 +32,16 @@ function PuzzleBoard({ imageUrl }) {
     if (prevIndex !== -1) updated[prevIndex] = null;
     updated[index] = piece;
     setSlots(updated);
+
+    const filled = updated.every((val, i) => i === tileCount - 1 || val === i);
+    setIsComplete(filled);
   };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <h2>Drag the  pieces to the grid </h2>
+      {isComplete && <Confetti width={width} height={height} />}
+      <h2>Drag the pieces to the grid</h2>
+      {isComplete && <h3 style={{ color: 'green' }}>🎉 You did it!</h3>}
 
       {/* Puzzle Grid */}
       <div
@@ -71,7 +76,7 @@ function PuzzleBoard({ imageUrl }) {
         ))}
       </div>
 
-      {/* Piece tray (remaining draggable pieces) */}
+      {/* Piece Tray */}
       <div
         style={{
           display: 'flex',
@@ -87,6 +92,8 @@ function PuzzleBoard({ imageUrl }) {
             <PuzzlePiece key={i} index={i} imageUrl={imageUrl} />
           ))}
       </div>
+
+      {/* Buttons */}
       <button
         onClick={() => navigate('/')}
         style={{
@@ -101,12 +108,11 @@ function PuzzleBoard({ imageUrl }) {
         ⬅️ Back to Home
       </button>
 
-
-      {/* Shuffle again button */}
       <button
         onClick={() => {
           setShuffledPieces(generateShuffledPieces());
           setSlots(Array(tileCount).fill(null));
+          setIsComplete(false);
         }}
         style={{ marginTop: '1rem', padding: '0.5rem 1rem' }}
       >

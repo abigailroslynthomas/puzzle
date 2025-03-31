@@ -1,5 +1,5 @@
-// PuzzleGame/PuzzlePiece.js
 import React from 'react';
+import { motion } from 'framer-motion';
 
 const gridSize = 3;
 const tileSize = 100;
@@ -13,9 +13,14 @@ export default function PuzzlePiece({ index, imageUrl }) {
   };
 
   return (
-    <div
+    <motion.div
       draggable
       onDragStart={handleDragStart}
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.3 }}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
       style={{
         width: `${tileSize}px`,
         height: `${tileSize}px`,
